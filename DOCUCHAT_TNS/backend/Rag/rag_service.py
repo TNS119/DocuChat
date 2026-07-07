@@ -15,8 +15,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # from langchain_huggingface import HuggingFaceEmbeddings
 # from langchain_huggingface import HuggingFaceEndpointEmbeddings
 from langchain_chroma import Chroma
-from DOCUCHAT_TNS.newapp.backend.Rag.embeddings import HFEmbedding
-from DOCUCHAT_TNS.newapp.backend.services.mongodb import (
+from Rag.embeddings import HFEmbedding
+from services.mongodb import (
     create_session,
     session_exists,
     save_chat_turn,
