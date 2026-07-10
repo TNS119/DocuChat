@@ -49,7 +49,7 @@ const Chatpage = () =>{
         try{
             console.log("sent request to Backend")
             const response = await fetch(
-                "http://localhost:8000/response",
+                "https://docuchat-pqz3.onrender.com/response",
                 {
                     method: "POST",
                     headers:{

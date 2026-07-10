@@ -30,7 +30,7 @@ const Home =(props) =>{
             formData.append("pdf",file)
             formData.append("session_id",session_id)
             const response = await fetch(
-                `http://localhost:8000/process/${topic}`,
+                `https://docuchat-pqz3.onrender.com/process/${topic}`,
                 {
                     method: "POST",
                     body: formData,
