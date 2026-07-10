@@ -55,7 +55,7 @@ async def process_pdf(
             topic=topic
         )
 
-        print(cloudinary_result)
+        # print(cloudinary_result) use it for cloudinary url
 
         # Create temporary PDF file
         temp_pdf = tempfile.NamedTemporaryFile(
@@ -69,8 +69,8 @@ async def process_pdf(
         pdf_path = temp_pdf.name
         # PDF_PATH_FOR_RAG = pdf_path
 
-        print(topic)
-        print(session_id)
+        # print(topic)
+        # print(session_id)
         print(f"📄 Processing PDF: {pdf_path}")
 
         query_data = {
@@ -82,8 +82,8 @@ async def process_pdf(
             "topic_name": topic,
         }
         
-        print(f"Temporary PDF Path: {pdf_path}")
-        print(f"Temp File Exists: {os.path.isfile(pdf_path)}")
+        # print(f"Temporary PDF Path: {pdf_path}")
+        # print(f"Temp File Exists: {os.path.isfile(pdf_path)}")
 
         query_response = Rag_core(query_data)
 

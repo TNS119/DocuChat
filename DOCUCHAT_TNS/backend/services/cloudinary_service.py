@@ -24,7 +24,7 @@ cloudinary.config(
     api_secret=os.getenv("CLOUDINARY_API_SECRET")
 )
 
-print("success")
+# print("success")
 
 MAX_CLOUDINARY_SIZE = 10 * 1024 * 1024
 

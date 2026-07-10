@@ -24,7 +24,7 @@ except Exception as e:
     print(e)
 
 def create_session(session_id, topicname):
-    print("👍 Session_history Created")
+    # print("👍 Session_history Created")
     chat_collection.insert_one({
             "_id": session_id,
             "topic": topicname,
@@ -35,7 +35,7 @@ def session_exists(session_id):
     return chat_collection.find_one({"_id": session_id}) is not None
 
 def save_chat_turn(session_id, user_query, assistant_response):
-    print("✌️ Saved RESPONSE and QUERY")
+    # print("✌️ Saved RESPONSE and QUERY")
     result = chat_collection.update_one(
         {"_id": session_id},
         {

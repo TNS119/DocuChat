@@ -1,6 +1,12 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-MODAL_URL = "https://nikhilendarsai119--docuchat-docling-extract-documents.modal.run"
+load_dotenv()
+
+MODAL_URL = os.getenv("MODAL_URL")
+
+print(f"Debug: MODAL_URL loaded: {'Yes' if MODAL_URL else 'No'}")
 
 
 def extract_documents(pdf_bytes: bytes):

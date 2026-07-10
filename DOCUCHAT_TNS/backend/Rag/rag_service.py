@@ -44,11 +44,9 @@ def get_vector_store(topic_name,session_id, embeddings):
     
     # Check if database already exists on disk
     if os.path.exists(db_path):
-        print(f"✓ LOADING EXISTING database from disk: {db_path}")
-        print(f"  Collection name: {safe_topic_name}")
+        print(f"✓ LOADING EXISTING database which is {safe_topic_name} from disk: {db_path}")
     else:
-        print(f"✓ CREATING NEW database at: {db_path}")
-        print(f"  Collection name: {safe_topic_name}")
+        print(f"✓ CREATING NEW database as {safe_topic_name} at: {db_path}")
     
     vector_store = Chroma(
         collection_name=safe_topic_name,
@@ -81,8 +79,6 @@ def Rag_core(given_data):
         # type-3(working)
         embeddings = HFEmbedding(HF_TOKEN)
 
-        # print(type(embeddings3.embed_query("Hello")))
-        # print(len(embeddings3.embed_query("Hello")))
 
         session_id = given_data.get("session_id", "default")
         print(f"got session_id: {session_id}")
