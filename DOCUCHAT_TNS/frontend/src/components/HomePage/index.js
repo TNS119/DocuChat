@@ -94,7 +94,7 @@ const Home =(props) =>{
             <HiddenInput 
                 id="File" 
                 type="file" 
-                accept=".pdf" 
+                accept=".pdf, .docx, .doc, .pptx, .xlsx, .csv, .html, .epub, .md, .txt, .text, .qmd, .Rmd, .odt, .ods, .odp, .eml, .msg, image/*, audio/*, .vtt"
                 onChange={(e) => setFile(e.target.files[0])}
             />
             <FileDisplayBox>
