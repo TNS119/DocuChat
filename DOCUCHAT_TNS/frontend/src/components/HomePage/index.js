@@ -90,7 +90,7 @@ const Home =(props) =>{
             <Labels htmlFor="topic">Enter the topic</Labels>
             <InputEle id="topic" type="text" onChange={topicChange} value={topic}/>
             <UploadWrapper>
-            <CustomLabel htmlFor="File">PDF</CustomLabel>
+            <CustomLabel htmlFor="File">DOC</CustomLabel>
             <HiddenInput 
                 id="File" 
                 type="file" 
