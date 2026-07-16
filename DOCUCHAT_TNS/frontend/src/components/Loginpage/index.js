@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import {FaEye, FaEyeSlash } from "react-icons/fa";
 import { buildApiUrl } from '../../api';
 import {
     OuterContainer,
@@ -9,16 +10,19 @@ import {
     SubHeading,
     Field,
     Label,
+    InputContinaer,
     Input,
+    PasswordShowButton,
     Button,
     ErrorText,
     LinkText
 } from './styledComponents';
 
-const LoginPage = () => {
+const LoginPage = ({ setIsAuthenticated }) => {
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [passwordType,setPasswordType] = useState("password")
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -46,6 +50,7 @@ const LoginPage = () => {
                 throw new Error(data?.message || 'Login failed');
             }
 
+            setIsAuthenticated(true);
             navigate('/', { replace: true });
         } catch (err) {
             setError(err.message || 'Something went wrong');
@@ -53,6 +58,14 @@ const LoginPage = () => {
             setLoading(false);
         }
     };
+
+    const handlePassword = () =>{
+        if (passwordType === "password" ){
+            setPasswordType("text")
+        }else{
+            setPasswordType("password")
+        }
+    }
 
     return (
         <OuterContainer>
@@ -63,6 +76,7 @@ const LoginPage = () => {
 
                     <Field>
                         <Label htmlFor="username">Username</Label>
+                        <InputContinaer>
                         <Input
                             id="username"
                             type="text"
@@ -71,18 +85,25 @@ const LoginPage = () => {
                             placeholder="Enter your username"
                             required
                         />
+                        </InputContinaer>
                     </Field>
 
                     <Field>
                         <Label htmlFor="password">Password</Label>
+                        <InputContinaer>
                         <Input
                             id="password"
-                            type="password"
+                            type = {passwordType}
                             value={password}
                             onChange={(event) => setPassword(event.target.value)}
                             placeholder="Enter your password"
                             required
                         />
+                        <PasswordShowButton type="button" onClick={handlePassword}>
+                            {passwordType ==="password"? <FaEye size={20}/> :<FaEyeSlash size={20}/>}
+                        </PasswordShowButton>
+                        </InputContinaer>
+                        
                     </Field>
 
                     <ErrorText>{error || ' '}</ErrorText>

@@ -1,11 +1,8 @@
 import os
-import json
 from dotenv import load_dotenv
 from pprint import pprint
 import re
-import shutil
 
-# env_path = os.path.join(os.path.dirname(__file__), ".env")
 load_dotenv()
 
 from langchain_groq import ChatGroq
@@ -32,9 +29,9 @@ from services.vector_db_service import get_vector_store
 #Saved upto here 143
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 HF_TOKEN = os.getenv("HF_TOKEN")
-
 print(f"Debug: GROQ_API_KEY loaded: {'Yes' if GROQ_API_KEY else 'No'}")
 print(f"Debug: HF_TOKEN loaded: {'Yes' if HF_TOKEN else 'No'}")
+
 
 
 def clean_response(text):
@@ -119,7 +116,7 @@ def Rag_core(given_data):
         """
         # Adjust path to work from python_services directory
         # If path doesn't exist, try with parent directory
-        print(f"\n📄 Processing File: {file_path}")
+        print(f"\n[PDF] Processing File: {file_path}")
 
         if not os.path.isfile(file_path):
             raise FileNotFoundError(f"File file not found: {file_path}")
@@ -147,7 +144,7 @@ def Rag_core(given_data):
 
 
         # 
-        print(f" ✓Loaded {len(docs)} Docling chunks")
+        print(f" [OK] Loaded {len(docs)} Docling chunks")
 
         text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=1000,
@@ -156,12 +153,12 @@ def Rag_core(given_data):
         )
 
         all_splits = text_splitter.split_documents(docs)
-        print(f"  ✓ Text split into {len(all_splits)} chunks")
+        print(f"  [OK] Text split into {len(all_splits)} chunks")
 
-        print(f"\n→ Adding {len(all_splits)} document chunks to vector database...")
+        print(f"\n-> Adding {len(all_splits)} document chunks to vector database...")
         document_ids = vector_store.add_documents(documents=all_splits)
-        print(f"✓ SUCCESSFULLY added {len(document_ids)} documents")
-        print(f"✓ Data automatically persisted to disk\n")
+        print(f"[OK] SUCCESSFULLY added {len(document_ids)} documents")
+        print(f"[OK] Data automatically persisted to disk\n")
         
         sample = vector_store.get(limit=1, include=["embeddings", "documents"])
 

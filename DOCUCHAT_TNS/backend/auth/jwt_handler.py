@@ -8,12 +8,12 @@ from jose import JWTError, jwt
 
 load_dotenv()
 
-SECRET_KEY = secrets.token_hex(32)
-ALGORITHM = os.getenv("ALGORITHM")
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM","HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(
-    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
+    os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES",1440)
 )
-print(f"Debug: ACCESS_TOKEN_EXPIRE_MINUTES loaded: {'Yes' if ACCESS_TOKEN_EXPIRE_MINUTES else 'No'}")
+
 
 
 def create_access_token(data: dict):

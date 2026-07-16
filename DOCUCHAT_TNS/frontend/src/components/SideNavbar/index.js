@@ -5,7 +5,6 @@ import { SideBarContainer, Heading, SessionList, SessionItemWrapper, SessionMain
 const SideNavBar = ({ sessions = [], activeSessionId, onSelectSession, onDeleteSession, username = 'User', onLogout }) => {
     const navigate = useNavigate();
     const [openSessionMenu, setOpenSessionMenu] = useState(null);
-    console.log(openSessionMenu)
     const handleMenuToggle = (sessionId) => {
         setOpenSessionMenu((current) => (current === sessionId ? null : sessionId));
     };
@@ -37,7 +36,6 @@ const SideNavBar = ({ sessions = [], activeSessionId, onSelectSession, onDeleteS
                                     </SessionText>
                                     
                                 </SessionMain>
-                                {console.log(openSessionMenu === session.session_id )}
                                 <SessionActionsButton 
                                     onClick={() => handleMenuToggle(session.session_id)} 
                                     $active={activeSessionId === session.session_id}

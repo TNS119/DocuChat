@@ -22,6 +22,26 @@ export const FormCard = styled.form`
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.25);
 `;
 
+export const InputContinaer = styled.div`
+  width: 100%;
+  background-color: rgba(16, 189, 242, 0.14) !important;
+  border: 1px solid rgb(16, 189, 242);
+  border-radius: 20px;
+  display: flex;
+  flexDirection: row;
+  justify-content: space-between;
+  alignItems: center;
+`
+
+export const PasswordShowButton = styled.button`
+  width: 20%;
+  background-color: transparent !important;
+  outline: none;
+  border: 0px;
+  color: #ffffff;
+  transition: all 0.8s ease;
+`
+
 export const Title = styled.h1`
   font-family: roboto;
   color: rgb(16, 189, 242);

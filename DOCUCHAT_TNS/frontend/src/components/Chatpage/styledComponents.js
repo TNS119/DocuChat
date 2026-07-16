@@ -108,7 +108,7 @@ export const ChatHeadSection = styled.div`
     display:flex;
     align-items:center;
 `
-    // justify-content: space-around;^^
+ 
 
 export const HeadContainer = styled.div`
     width: 62%;

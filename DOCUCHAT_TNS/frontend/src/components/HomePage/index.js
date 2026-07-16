@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom"
 import {useEffect, useState} from "react"
 import {v4 as uuidv4} from 'uuid'
 import {Watch} from 'react-loader-spinner'
-import { buildApiUrl } from '../../api'
+// import { buildApiUrl } from '../../api'
 import {FormContainer, FormElement,LoadingContainer,LoadingText,Heading,Labels,InputEle , UploadWrapper, CustomLabel, HiddenInput,FileDisplayBox,SubmitButton, RetryTxt, RetryButton, ActionRow} from "./styledComponents"
 
 
@@ -13,22 +13,19 @@ const UploadStatusConstants = {
     "success": "SUCCESS"
 }
 
-// `https://docuchat-pqz3.onrender.com/process/${topic}`
-// http://localhost:8000/process/${topic}
 
-const Home =(props) =>{
+const Home = ({ authFetch }) => {
     const navigate = useNavigate()
     const [topic,setTopic] = useState("")
     const [uploadStatus, setUploadStatus] = useState(UploadStatusConstants.success)
     const [file,setFile] = useState(null)
+    const [activeSessionId,setActiveSessionId] = useState(null)
     const [latestSession, setLatestSession] = useState(null)
 
     useEffect(() => {
         const loadLatestSession = async () => {
             try {
-                const response = await fetch(buildApiUrl("/auth/sessions"), {
-                    credentials: "include"
-                })
+                const response = await authFetch("/auth/sessions")
                 if (!response.ok) {
                     return
                 }
@@ -45,20 +42,18 @@ const Home =(props) =>{
         loadLatestSession()
     }, [])
 
-    const uploadingFile = async () =>{
+    const reUploadingFile = async () =>{
         setUploadStatus(UploadStatusConstants.inprogress)
         try{
             console.log("uploading started")
             const formData = new FormData();
-            const session_id = uuidv4()
-            console.log(session_id)
+            console.log(`active id for retry${activeSessionId}`)
             formData.append("file",file)
-            formData.append("session_id",session_id)
-            const response = await fetch(
-                buildApiUrl(`/process/${topic}`),
+            formData.append("session_id",activeSessionId)
+            const response = await authFetch(
+                `/process/${topic}`,
                 {
                     method: "POST",
-                    credentials: "include",
                     body: formData,
                 }
             )
@@ -76,6 +71,48 @@ const Home =(props) =>{
                 state:{
                     query_response: data.response_msg,
                     title: topic,
+                    session_id: activeSessionId
+                }
+            })
+        }catch(error){
+            console.log(`Error at uploading and processing file: ${error}`)
+            setUploadStatus(UploadStatusConstants.retry)
+        }
+        
+    }
+
+    const uploadingFile = async () =>{
+        setUploadStatus(UploadStatusConstants.inprogress)
+        try{
+            console.log("uploading started")
+            const formData = new FormData();
+            const session_id = uuidv4()
+            console.log(session_id)
+            setActiveSessionId(session_id)
+            formData.append("file",file)
+            formData.append("session_id",session_id)
+            const response = await authFetch(
+                `/process/${topic}`,
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            )
+            if(!response.ok){
+                throw new Error(`Upload failed with status ${response.status}`)
+            }
+            console.log("uploaded file")
+            const data = await response.json()
+            console.log(data)
+            if(data[1] === 500){
+                    throw new Error(`Uploaded but not processed: ${data[0].error}`)
+            }
+            
+            setUploadStatus(UploadStatusConstants.success)
+            navigate("/chat",{
+                state:{
+                    query_response: data.response_msg,
+                    title: topic,
                     session_id: session_id
                 }
             })
@@ -88,7 +125,7 @@ const Home =(props) =>{
     const submission = (event) => {
         event.preventDefault()
         console.log("uploading")
-        uploadingFile()
+        uploadingFile("false")
     }
 
     const topicChange =(event)=>{
@@ -104,7 +141,7 @@ const Home =(props) =>{
 
     const retryView = () =>(
         <div style={{display: "flex", flexDirection: "column", alignItems: "center", gap: "20px"}}>
-            <RetryButton onClick={uploadingFile}>Retry!</RetryButton>
+            <RetryButton onClick={reUploadingFile}>Retry!</RetryButton>
             <RetryTxt>Upload failed! Please try again.</RetryTxt>
         </div>
     )
@@ -131,7 +168,7 @@ const Home =(props) =>{
                 <SubmitButton type="submit" disabled={!file}>Submit</SubmitButton>
                 {latestSession && (
                     <SubmitButton type="button" onClick={() => navigate('/chat', { state: { session_id: latestSession.session_id, title: latestSession.topic } })}>
-                        Continue
+                        Continue to chat
                     </SubmitButton>
                 )}
             </ActionRow>

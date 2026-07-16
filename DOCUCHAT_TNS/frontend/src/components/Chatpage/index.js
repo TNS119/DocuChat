@@ -19,7 +19,7 @@ const MessageStatusConstants = {
 }
 
 
-const Chatpage = () =>{
+const Chatpage = ({ authFetch }) => {
     const routeNavigation = useNavigate()
     const {state} = useLocation()
     const [userInput,setUserInput] = useState("")
@@ -41,9 +41,8 @@ const Chatpage = () =>{
     useEffect(() => {
         const loadProfile = async () => {
             try {
-                const response = await fetch(buildApiUrl("/auth/me"), {
-                    credentials: "include"
-                })
+                
+                const response = await authFetch("/auth/me")
                 if (!response.ok) {
                     return
                 }
@@ -58,9 +57,7 @@ const Chatpage = () =>{
 
         const loadSidebarSessions = async () => {
             try {
-                const response = await fetch(buildApiUrl("/auth/sessions"), {
-                    credentials: "include"
-                })
+                const response = await authFetch("/auth/sessions")
 
                 if (!response.ok) {
                     return
@@ -86,9 +83,7 @@ const Chatpage = () =>{
 
         const loadSessionHistory = async () => {
             try {
-                const response = await fetch(buildApiUrl(`/auth/session/${activeSessionId}`), {
-                    credentials: "include"
-                })
+                const response = await authFetch(`/auth/session/${activeSessionId}`)
 
                 if (!response.ok) {
                     return 
@@ -117,20 +112,17 @@ const Chatpage = () =>{
         setUserInput(event.target.value)
     }
 
-    // http://localhost:8000/response
-    // https://docuchat-pqz3.onrender.com/response
     const getResponseFromLLM =async (query)=>{
         setMsgStatus(MessageStatusConstants.inprogress)
         try{
             console.log("sent request to Backend")
-            const response = await fetch(
-                buildApiUrl("/response"),
+            const response = await authFetch(
+                "/response",
                 {
                     method: "POST",
                     headers:{
                         "Content-type": "application/json"
                     },
-                    credentials: "include",
                     body: JSON.stringify({
                         query: query,
                         status: false,
@@ -207,11 +199,10 @@ const Chatpage = () =>{
             return updated
         })
 
-        await fetch(
-                buildApiUrl(`/auth/session/${sessionId}`),
+        await authFetch(
+                `/auth/session/${sessionId}`,
                 {
-                    method: "DELETE",
-                    credentials: "include"
+                    method: "DELETE"
                 }
             );
 

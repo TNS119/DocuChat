@@ -24,9 +24,9 @@ users_collection.create_index(
 
 try:
     client.admin.command("ping")
-    print("✅ MongoDB Connected Successfully")
+    print("[OK] MongoDB Connected Successfully")  # FIX: emoji crashed Windows CP1252 terminal
 except Exception as e:
-    print("❌ MongoDB Connection Failed")
+    print("[ERROR] MongoDB Connection Failed")    # FIX: emoji crashed Windows CP1252 terminal
     print(e)
 
 def create_session(

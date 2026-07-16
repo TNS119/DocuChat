@@ -49,16 +49,35 @@ export const Label = styled.label`
   color: #e0f2fe;
   font-size: 14px;
 `;
-
-export const Input = styled.input`
+export const InputContinaer = styled.div`
   width: 100%;
   background-color: rgba(16, 189, 242, 0.14) !important;
   border: 1px solid rgb(16, 189, 242);
   border-radius: 20px;
-  color: #ffffff;
-  padding: 10px 12px;
+  display: flex;
+  flexDirection: row;
+  justify-content: space-between;
+  alignItems: center;
+`
+export const Input = styled.input`
+  width: 100%;
+  border-radius: 20px;
+  padding: 10px 6px 10px 16px;
+  background-color: transparent !important;
   outline: none;
+  border: 0px;
+  color: #ffffff;
+  font-size: 14px;
 `;
+
+export const PasswordShowButton = styled.button`
+  width: 20%;
+  background-color: transparent !important;
+  outline: none;
+  border: 0px;
+  color: #ffffff;
+  transition: all 0.8s ease;
+`
 
 export const Button = styled.button`
   width: 100%;
@@ -66,7 +85,7 @@ export const Button = styled.button`
   color: rgb(16, 189, 242);
   border: 1px solid rgb(16, 189, 242);
   padding: 10px 12px;
-  border-radius: 20px;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 8px;
   transition: all 0.3s ease;

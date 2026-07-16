@@ -36,9 +36,9 @@ def get_vector_store(
     
 
     if db_exists:
-        print(f"✓ LOADING EXISTING database from disk: {db_path}")
+        print(f"[LOAD] Loading existing database from disk: {db_path}")
     else:
-        print(f"✓ CREATING NEW database at: {db_path}")
+        print(f"[NEW] Creating new database at: {db_path}")
 
     vector_store = Chroma(
         collection_name=safe_topic_name,
@@ -71,12 +71,12 @@ def delete_vector_db(user_id, session_id):
     try:
         if os.path.exists(db_path):
             shutil.rmtree(db_path)
-            print(f"✅ Deleted vector DB: {db_path}")
+            print(f"[DELETED] Vector DB: {db_path}")
             return True
 
-        print(f"⚠️ Vector DB not found: {db_path}")
+        print(f"[WARN] Vector DB not found: {db_path}")
         return False
 
     except Exception as e:
-        print(f"❌ Error deleting vector DB: {e}")
+        print(f"[ERROR] Error deleting vector DB: {e}")
         return False

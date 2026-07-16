@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import {FaEye, FaEyeSlash } from "react-icons/fa";
 import { buildApiUrl } from '../../api';
 import {
   PageContainer,
@@ -8,8 +9,10 @@ import {
   Subtitle,
   Field,
   Label,
+  InputContinaer,
   Input,
   SubmitButton,
+  PasswordShowButton,
   Message,
   FooterText
 } from './styledComponents';
@@ -17,6 +20,7 @@ import {
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ username: '', password: '' });
+  const [passwordType,setPasswordType] = useState("password")
   const [status, setStatus] = useState({ success: false, message: '' });
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +28,14 @@ const RegisterPage = () => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handlePassword = () =>{
+        if (passwordType === "password" ){
+            setPasswordType("text")
+        }else{
+            setPasswordType("password")
+        }
+    }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -57,32 +69,38 @@ const RegisterPage = () => {
       <FormCard onSubmit={handleSubmit}>
         <Title>Create account</Title>
         <Subtitle>Join DOCUCHART and start chatting with your PDFs.</Subtitle>
-
         <Field>
           <Label htmlFor="username">Username</Label>
+          <InputContinaer>
           <Input
-            id="username"
-            name="username"
-            type="text"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Choose a username"
-            required
+              id="username"
+              name="username"
+              type="text"
+              value={formData.username}
+              onChange={handleChange}
+              placeholder="Choose a username"
+              required
           />
+          </InputContinaer>
         </Field>
 
-        <Field>
+      <Field>
           <Label htmlFor="password">Password</Label>
+          <InputContinaer>
           <Input
-            id="password"
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Choose a password"
-            required
+              id="password"
+              type = {passwordType}
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Choose a password"
+              required
           />
-        </Field>
+          <PasswordShowButton type="button" onClick={handlePassword}>
+              {passwordType ==="password"? <FaEye size={20}/> :<FaEyeSlash size={20}/>}
+          </PasswordShowButton>
+          </InputContinaer>
+          
+      </Field>
 
         <SubmitButton type="submit" disabled={loading}>
           {loading ? 'Creating account...' : 'Register'}

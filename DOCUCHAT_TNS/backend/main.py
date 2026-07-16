@@ -1,6 +1,7 @@
 import os
 import tempfile
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse  # BUG 7 FIX: needed for proper error status codes
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import UploadFile, File, Form
@@ -89,7 +90,7 @@ async def process_file(
 
         # print(topic)
         # print(session_id)
-        print(f"📄 Processing file: {pdf_path}")
+        print(f"[PDF] Processing file: {pdf_path}")
 
         query_data = {
             "session_id": session_id,
@@ -122,17 +123,22 @@ async def process_file(
         import traceback
         traceback.print_exc()
 
-        return {
-            "error": str(e),
-            "response_msg": f"Error processing PDF: {str(e)}",
-            "sender": "error"
-        }, 500
+        # BUG 7 FIX: FastAPI does not support Flask-style (dict, status) tuples.
+        # Use JSONResponse to properly return 500 status to the client.
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": str(e),
+                "response_msg": f"Error processing PDF: {str(e)}",
+                "sender": "error"
+            }
+        )
 
     finally:
         if pdf_path and os.path.exists(pdf_path):
             try:
                 os.remove(pdf_path)
-                print(f"🗑️ Temporary PDF deleted: {pdf_path}")
+                print(f"[DELETED] Temporary PDF deleted: {pdf_path}")
             except Exception as e:
                 print(f"Error deleting temp PDF: {e}")
  
@@ -160,11 +166,15 @@ def query_response(data: ResponseRequest, current_user=Depends(get_current_user)
         print(f"Error in /response endpoint: {str(e)}")
         import traceback
         traceback.print_exc()
-        return {
-            "error": str(e),
-            "response_msg": f"Error processing query: {str(e)}",
-            "sender": "error"
-        }, 500
+        # BUG 7 FIX: Same fix — return proper 500 status via JSONResponse
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": str(e),
+                "response_msg": f"Error processing query: {str(e)}",
+                "sender": "error"
+            }
+        )
         
     
     
