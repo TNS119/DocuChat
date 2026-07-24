@@ -15,6 +15,8 @@ const getApiBaseUrl = () => {
 
 export const API_BASE_URL = getApiBaseUrl();
 
+console.log("API_BASE_URL =", API_BASE_URL);
+
 export const buildApiUrl = (path) => `${API_BASE_URL}${path}`;
 
 export const createAuthFetch = (setIsAuthenticated, navigate) => {
